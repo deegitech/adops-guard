@@ -1,0 +1,21 @@
+# Example crontab entries (crontab -e). cron mails any output to MAILTO.
+# Paths, ids, dates and amounts are placeholders.
+#
+# --config names the file explicitly (a config found in the working directory works too,
+# but is announced on stderr, which cron would mail every time).
+
+MAILTO=you@example.com
+PATH=/usr/local/bin:/usr/bin:/bin:/home/you/.local/bin
+
+# Every morning: click-quality audit of the last 7 days. Silent unless a signal fires
+# (exit 3), in which case cron mails you the full report.
+15 8 * * * cd "$HOME/adops" && adops-guard --config adops-guard.ini google audit --days 7 --fail-on-signal > audit.txt 2>&1 || cat audit.txt
+
+# Every 15 minutes: one spend poll; at 1,500.00 lower the campaign to 10.00 a day.
+# Safe to repeat: once it has fired, the state file turns later runs into no-ops.
+# Spend is counted from the active account budget's start. Accounts without one
+# (automatic payments) need --since YYYY-MM-DD, the first day to count (account time zone).
+*/15 * * * * cd "$HOME/adops" && adops-guard --config adops-guard.ini google spend-watch --once --target 1500.00 --then-budget 11111111111=10.00 --apply > /dev/null 2> spend-watch.err || cat spend-watch.err
+
+# Weekly: Meta account status as JSON, for your own dashboards.
+0 9 * * 1 cd "$HOME/adops" && adops-guard --config adops-guard.ini --json meta status > meta-status.json

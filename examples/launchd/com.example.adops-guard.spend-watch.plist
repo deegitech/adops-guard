@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  A spend watch as a launchd agent (macOS): one poll every 15 minutes, like the cron example.
+
+  launchd does not expand ~ or $HOME: replace /Users/you with your home directory everywhere.
+  Placeholders: the campaign id, the amounts, the date and the paths.
+
+  The date after the since option is the first day to count spend from (account time zone). It is
+  required on accounts without an active account budget (automatic payments); with it, only the
+  real-time metrics count. Run the same command once by hand without the apply option first: it
+  validates every action before it watches.
+
+  Load, check, unload:
+    cp com.example.adops-guard.spend-watch.plist ~/Library/LaunchAgents/
+    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.example.adops-guard.spend-watch.plist
+    launchctl print gui/$(id -u)/com.example.adops-guard.spend-watch
+    launchctl bootout gui/$(id -u)/com.example.adops-guard.spend-watch
+
+  Credentials are not in this file: the config file points at a chmod 600 google-ads.yaml.
+  Once the watch has fired, later runs are no-ops until you reset it.
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.example.adops-guard.spend-watch</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/you/.local/bin/adops-guard</string>
+    <string>--config</string>
+    <string>/Users/you/adops/adops-guard.ini</string>
+    <string>google</string>
+    <string>spend-watch</string>
+    <string>--once</string>
+    <string>--target</string>
+    <string>1500.00</string>
+    <string>--since</string>
+    <string>2030-05-01</string>
+    <string>--then-budget</string>
+    <string>11111111111=10.00</string>
+    <string>--apply</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/you/adops</string>
+  <key>StartInterval</key>
+  <integer>900</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/you/adops/spend-watch.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/you/adops/spend-watch.err</string>
+</dict>
+</plist>

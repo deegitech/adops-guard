@@ -1,0 +1,29 @@
+name: Feature request
+description: Suggest a command, a guard or a doc improvement.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        adops-guard stays small on purpose: a few everyday operations, each with a dry run, a guard,
+        validation, read-back and a journal. Ideas that fit that shape are the easiest to accept.
+        Please do not include real account data.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What do you do today, and what goes wrong or takes too long?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: The command or change you have in mind, and how its dry run and guard would work.
+    validations:
+      required: true
+  - type: textarea
+    id: api
+    attributes:
+      label: API details
+      description: Endpoints, fields or documentation links, if you know them. Say if a behaviour was observed rather than documented, and when.
