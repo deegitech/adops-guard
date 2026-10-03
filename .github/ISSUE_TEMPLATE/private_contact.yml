@@ -1,0 +1,19 @@
+name: Private contact request
+description: Only if the private reporting form does not work. No details here; this issue is public.
+title: "Private contact request"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this only if the repository's private form (**Security** tab, **Report a vulnerability**) is
+        not available, for a security problem or a Code of Conduct report.
+
+        **Do not describe the problem here: this issue is public.** A maintainer will reply with a
+        private way to reach us.
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: This issue contains no details about the problem, and no tokens, IDs or account data.
+          required: true

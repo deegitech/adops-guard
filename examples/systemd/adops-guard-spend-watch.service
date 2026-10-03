@@ -1,0 +1,42 @@
+# A spend watch as a systemd *user* service (Linux).
+#
+#   mkdir -p ~/.config/systemd/user
+#   cp adops-guard-spend-watch.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user start adops-guard-spend-watch
+#   journalctl --user -u adops-guard-spend-watch -f
+#
+# Keep `loginctl enable-linger $USER` in mind if it must run while you are logged out.
+#
+# Credentials are NOT in this unit: the config file points at a chmod 600
+# google-ads.yaml. Run the same command once by hand without --apply first; it
+# validates every action before it starts watching.
+#
+# Spend is counted from the active account budget's start. On an account without
+# one (automatic payments), add --since YYYY-MM-DD (the first day to count, in the
+# account's time zone); without it the watch refuses to start (exit 2).
+#
+# --max-hours counts per start: a restart after exit 1 or 5 starts the count again,
+# so the watch can run longer than 72 hours in total.
+#
+# Placeholders: replace the campaign id, the amounts and the paths.
+
+[Unit]
+Description=adops-guard spend watch (Google Ads)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/adops
+ExecStart=%h/.local/bin/adops-guard --config %h/adops/adops-guard.ini google spend-watch \
+    --target 1500.00 --then-budget 11111111111=10.00 --interval 900 --max-hours 72 --apply
+# Restart after crashes and network trouble, but not after a refusal (3), a read-back
+# mismatch (4) or a configuration error (2): those need a human.
+Restart=on-failure
+RestartSec=300
+RestartPreventExitStatus=2 3 4
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=default.target

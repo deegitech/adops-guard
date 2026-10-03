@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Editors and OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Local adops-guard files: never commit configuration, journals, state or credentials
+/adops-guard.ini
+.adops-guard/
+journal.jsonl
+state.json
+google-ads.yaml
+*.env
+*.token
+meta-token

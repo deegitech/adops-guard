@@ -1,0 +1,21 @@
+# google-ads.yaml: the same keys Google's own client libraries use, and the same
+# default file (~/google-ads.yaml). If that file already exists, do not copy this
+# one over it: add or update the three keys below in it instead.
+#
+#   [ -e ~/google-ads.yaml ] || (umask 077 && cp google-ads.example.yaml ~/google-ads.yaml)
+#   chmod 600 ~/google-ads.yaml      # adops-guard refuses a file other users can read
+#
+# Only flat "key: value" lines are read. Service-account keys (json_key_file_path)
+# are not supported yet. See README, "Getting Google Ads credentials".
+
+client_id: REPLACE_ME.apps.googleusercontent.com
+client_secret: REPLACE_ME
+refresh_token: REPLACE_ME
+
+# Only if you reach the account through a manager (MCC) account:
+# login_customer_id: 1234567890
+
+# Optional. Google sunset developer tokens on 9 September 2026 and ignores them;
+# API access now comes from your Google Cloud project. Leave this out unless you
+# have a reason to send one.
+# developer_token: REPLACE_ME
