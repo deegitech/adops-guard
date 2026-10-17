@@ -44,7 +44,7 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
-dev = ["pytest>=8,<10", "ruff==0.16.10"]
+dev = ["pytest>=8,<10", "ruff==0.17.0"]
 
 [project.scripts]
 adops-guard = "adops_guard.cli:main"
